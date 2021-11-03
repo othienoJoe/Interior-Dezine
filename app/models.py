@@ -1,7 +1,8 @@
 from django.db import models
 import datetime as dt
 from django.contrib.auth.models import User
-
+# Cloudinary
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Company(models.Model):
@@ -76,7 +77,7 @@ class Profile(models.Model):
 # rating models
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Company, on_delete=models.CASCADE)
     design_rate = models.IntegerField(default=0, blank=True, null=True)
     usability_rate = models.IntegerField(default=0, blank=True, null=True)
     content_rate = models.IntegerField(default=0, blank=True, null=True)
