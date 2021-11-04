@@ -1,6 +1,7 @@
 from django.db import models
 import datetime as dt
 from django.contrib.auth.models import User
+
 # Cloudinary
 from cloudinary.models import CloudinaryField
 
@@ -12,8 +13,6 @@ class Company(models.Model):
 	image = CloudinaryField("image")
 	url = models.URLField(blank=True)
 	location = models.CharField(max_length=100, default="Nairobi")
-	# usability_rate = models.IntegerField(default=0, blank=True, null=True)
-	# content_rate = models.IntegerField(default=0, blank=True, null=True)
 	date = models.DateTimeField(auto_now_add=True, null=True)
 
 	@classmethod
@@ -77,7 +76,7 @@ class Profile(models.Model):
 # rating models
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     design_rate = models.IntegerField(default=0, blank=True, null=True)
     usability_rate = models.IntegerField(default=0, blank=True, null=True)
     content_rate = models.IntegerField(default=0, blank=True, null=True)
