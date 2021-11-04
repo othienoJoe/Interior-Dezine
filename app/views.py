@@ -21,15 +21,15 @@ def index(request):  # Home page
 	# get the latest company from the database
 	latest_company = company[0]
 	# get company rating
-	rating = Rating.objects.filter(project_id=latest_company.id).first()
+	rating = Rating.objects.filter(company_id=latest_company.id).first()
 
 	return render(
 		request, "index.html", {"companies": company, "project_home": latest_company, "rating": rating}
   )
 
 # single company page
-def Company_details(request, project_id):
-	company = Company.objects.get(id=project_id)
+def Company_details(request, company_id):
+	company = Company.objects.get(id=company_id)
 	# get company rating
 	rating = Rating.objects.filter(company = company)
 	return render(request, "company.html", {"project": company, "rating": rating})
@@ -38,8 +38,8 @@ def Company_details(request, project_id):
 def profile(request):  # view profile
 	current_user = request.user
 	profile = Profile.objects.filter(user_id=current_user.id).first()  # get profile
-	project = Company.objects.filter(user_id=current_user.id).all()  # get all projects
-	return render(request, "profile.html", {"profile": profile, "images": project})
+	company = Company.objects.filter(user_id=current_user.id).all()  # get all projects
+	return render(request, "profile.html", {"profile": profile, "images": company})
 
 @login_required(login_url="/accounts/login/")
 def update_profile(request):
@@ -122,8 +122,8 @@ def save_project(request):
 # delete project
 @login_required(login_url="/accounts/login/")
 def delete_project(request, id):
-	project = Company.objects.get(id=id)
-	project.delete_project()
+	company = Company.objects.get(id=id)
+	company.delete_company()
 	return redirect("/profile", {"success": "Project Deleted Successfully"})
 
 # rate_project
@@ -131,7 +131,7 @@ def delete_project(request, id):
 def rate_project(request, id):
   if request.method == "POST":
 
-			project = Company.objects.get(id=id)
+			company = Company.objects.get(id=id)
 			current_user = request.user
 
 			design_rate=request.POST["design"]
@@ -139,7 +139,7 @@ def rate_project(request, id):
 			content_rate=request.POST["content"]
 
 			Rating.objects.create(
-				project=project,
+				company = company,
 				user=current_user,
 				design_rate=design_rate,
 				usability_rate=usability_rate,
@@ -151,43 +151,39 @@ def rate_project(request, id):
 			avg_rating= (int(design_rate)+int(usability_rate)+int(content_rate))/3
 
 			# update the project with the new rate
-			project.rate=avg_rating
-			project.update_project()
+			company.rate=avg_rating
+			company.update_project()
 
-			return render(request, "project.html", {"success": "Project Rated Successfully", "project": project, "rating": Rating.objects.filter(project=project)})
+			return render(request, "project.html", {"success": "Company Rated Successfully", "company": company, "rating": Rating.objects.filter(company=company)})
   else:
-			project = Company.objects.get(id=id)
-			return render(request, "project.html", {"danger": "Project Rating Failed", "project": project})
+			company = Company.objects.get(id=id)
+			return render(request, "company.html", {"danger": "Company Rating Failed", "company": company})
 
 # search projects
 def search_project(request):
-    if 'search_term' in request.GET and request.GET["search_term"]:
-        search_term = request.GET.get("search_term")
-        searched_projects = .objects.filter(title__icontains=search_term)
-        message = f"Search For: {search_term}"
+  if 'search_term' in request.GET and request.GET["search_term"]:
+			search_term = request.GET.get("search_term")
+			searched_company = Company.objects.filter(title__icontains=search_term)
+			message = f"Search For: {search_term}"
 
-        return render(request, "search.html", {"message": message, "projects": searched_projects})
-    else:
-        message = "You haven't searched for any term"
-        return render(request, "search.html", {"message": message})
-
-
+			return render(request, "search.html", {"message": message, "companies": searched_company})
+  else:
+			message = "You haven't searched for any term"
+			return render(request, "search.html", {"message": message})
 
 # rest api ====================================
 class ProfileList(APIView): # get all profiles
-    permission_classes = (IsAdminOrReadOnly,)
-    def get(self, request, format=None):
-        all_profiles = Profile.objects.all()
-        serializers = ProfileSerializer(all_profiles, many=True)
-        return Response(serializers.data)
+	permission_classes = (IsAdminOrReadOnly,)
 
-    # def post(self, request, format=None):
-    #     serializers = MerchSerializer(data=request.data)
-
+	def get(self, request, format=None):
+			all_profiles = Profile.objects.all()
+			serializers = ProfileSerializer(all_profiles, many=True)
+			return Response(serializers.data)
 
 class ProjectList(APIView): # get all projects
-    permission_classes = (IsAdminOrReadOnly,)
-    def get(self, request, format=None):
-        all_projects = Project.objects.all()
-        serializers = ProjectSerializer(all_projects, many=True)
-        return Response(serializers.data)
+	permission_classes = (IsAdminOrReadOnly,)
+
+	def get(self, request, format=None):
+			all_companies = Company.objects.all()
+			serializers = ProjectSerializer(all_companies, many=True)
+			return Response(serializers.data)
