@@ -8,7 +8,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 		fields = ("user", "profile_photo", "bio", "contact")
 
 # Company serializer
-class ProjectSerializer(serializers.ModelSerializer):
+class CompanySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Company
 		fields = ("user", "title", "description", "image", "url", "location", "date")

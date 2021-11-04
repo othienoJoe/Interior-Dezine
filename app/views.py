@@ -12,7 +12,7 @@ from rest_framework import status
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializer import ProfileSerializer,ProjectSerializer
+from .serializer import ProfileSerializer,CompanySerializer
 from .permissions import IsAdminOrReadOnly
 
 # Create your views here.
@@ -28,7 +28,7 @@ def index(request):  # Home page
   )
 
 # single company page
-def Company_details(request, company_id):
+def company_details(request, company_id):
 	company = Company.objects.get(id=company_id)
 	# get company rating
 	rating = Rating.objects.filter(company = company)
@@ -91,7 +91,7 @@ def update_profile(request):
 
 # save project
 @login_required(login_url="/accounts/login/")
-def save_project(request):
+def save_company(request):
 	if request.method == "POST":
 		current_user = request.user
 
@@ -113,7 +113,7 @@ def save_project(request):
 				url=url,
 				image=image_url,
 		)
-		project.save_project()
+		project.save_company()
 
 		return redirect("/profile", {"success": "Project Saved Successfully"})
 	else:
@@ -121,14 +121,14 @@ def save_project(request):
 
 # delete project
 @login_required(login_url="/accounts/login/")
-def delete_project(request, id):
+def delete_company(request, id):
 	company = Company.objects.get(id=id)
 	company.delete_company()
 	return redirect("/profile", {"success": "Project Deleted Successfully"})
 
 # rate_project
 @login_required(login_url="/accounts/login/")
-def rate_project(request, id):
+def rate_company(request, id):
   if request.method == "POST":
 
 			company = Company.objects.get(id=id)
@@ -152,7 +152,7 @@ def rate_project(request, id):
 
 			# update the project with the new rate
 			company.rate=avg_rating
-			company.update_project()
+			company.update_company()
 
 			return render(request, "project.html", {"success": "Company Rated Successfully", "company": company, "rating": Rating.objects.filter(company=company)})
   else:
@@ -160,7 +160,7 @@ def rate_project(request, id):
 			return render(request, "company.html", {"danger": "Company Rating Failed", "company": company})
 
 # search projects
-def search_project(request):
+def search_company(request):
   if 'search_term' in request.GET and request.GET["search_term"]:
 			search_term = request.GET.get("search_term")
 			searched_company = Company.objects.filter(title__icontains=search_term)
@@ -180,10 +180,10 @@ class ProfileList(APIView): # get all profiles
 			serializers = ProfileSerializer(all_profiles, many=True)
 			return Response(serializers.data)
 
-class ProjectList(APIView): # get all projects
+class CompanyList(APIView): # get all projects
 	permission_classes = (IsAdminOrReadOnly,)
 
 	def get(self, request, format=None):
 			all_companies = Company.objects.all()
-			serializers = ProjectSerializer(all_companies, many=True)
+			serializers = CompanySerializer(all_companies, many=True)
 			return Response(serializers.data)
