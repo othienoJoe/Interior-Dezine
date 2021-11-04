@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'IntDezine',
+    'app',
     'bootstrap4',
     'rest_framework',
     'django.contrib.admin',
