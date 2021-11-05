@@ -15,7 +15,7 @@
 					<div class="col-md-8 text-center mt-5">
 						<div class="single-content">
 							<h2 class="display-6 mt-4 headings">
-								{{ project.title }}
+								{{ company.title }}
 							</h2>
 							<div class="author mt-5 mb-5">
 								<p>
@@ -157,7 +157,7 @@
 														aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
-											<form action="{% url 'rate_project' project.id %}" method="post">
+											<form action="{% url 'rate_company' company.id %}" method="post">
 												{% csrf_token %}
 												<div class="mb-3">
 													<label for="Design">Design</label>

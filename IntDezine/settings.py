@@ -37,7 +37,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'app',
     'bootstrap4',
-    'registration',
+    'django_registration',
     'rest_framework',
     'mathfilters',
     'django.contrib.admin',
