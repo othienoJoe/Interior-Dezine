@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+# Cloudinary
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +31,6 @@ SECRET_KEY = 'django-insecure-8b)fytql!@y71z1rm3g&qedi72fw(%zy3-dfl6fzym!afssphe
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -121,3 +126,23 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# setting configuration parameters globally
+cloudinary.config( 
+  cloud_name = "nicothieno", 
+  api_key = "138935826953116", 
+  api_secret = "tWXKi8ktGfsF7bFwyEaPDc0U8Y8",
+)
+
+# mail configuration
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'nickodemus.otsieno@student.moringaschool.com'
+
+# rest_framework authtoken
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
