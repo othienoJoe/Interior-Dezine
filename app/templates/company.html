@@ -2,7 +2,7 @@
 
 {% block content %}
 <!-- Each single company details -->
-{% if project.image %}
+{% if company.image %}
 <section class="single-top-header" style="background-image: url({{company.image.url}})">
 
 	{% else %}
@@ -19,10 +19,10 @@
 							</h2>
 							<div class="author mt-5 mb-5">
 								<p>
-									{{ project.user.first_name }} {{ project.user.last_name }}
+									{{ company.user.first_name }} {{ company.user.last_name }}
 								</p>
 								<!-- check if author profile exists -->
-								{% if project.user.profile_pic_path %}
+								{% if company.user.profile_pic_path %}
 								<img src="{{ post.user.profile_pic_path }}" alt="author" class="author-img mt-3">
 								{% else %}
 								<img src="https://image.pngaaa.com/303/1721303-middle.png" alt="author"
@@ -41,7 +41,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<p>
-						{{ project.description|safe }}
+						{{ company.description|safe }}
 					</p>
 				</div>
 			</div>

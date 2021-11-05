@@ -16,7 +16,7 @@ urlpatterns = [
 	path("search/", views.search_company, name="search_company"),
 	# api
 	url(r'^api/profile/$', views.ProfileList.as_view()),
-	url(r'^api/project/$', views.ProjectList.as_view()),
+	url(r'^api/project/$', views.CompanyList.as_view()),
 ]
 
 if settings.DEBUG:

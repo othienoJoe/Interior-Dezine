@@ -157,7 +157,7 @@
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
 									<div class="modal-body">
-										<form action="{% url 'save_project' %}" method="post" enctype="multipart/form-data">
+										<form action="{% url 'save_company' %}" method="post" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="form-group">
 												<label for="title">Title</label>
@@ -214,7 +214,7 @@
 										<a class="text-primary m-3" href="">
 											<i class="fa fa-eye"></i>
 										</a>
-										<a class="text-danger" href="{% url 'delete_project' image.id %}">
+										<a class="text-danger" href="{% url 'delete_company' image.id %}">
 											<i class="fa fa-trash-alt text-danger"></i>
 										</a>
 									</td>

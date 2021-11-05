@@ -24,7 +24,7 @@ def index(request):  # Home page
 	rating = Rating.objects.filter(company_id=latest_company.id).first()
 
 	return render(
-		request, "index.html", {"companies": company, "project_home": latest_company, "rating": rating}
+		request, "index.html", {"companies": company, "company_home": latest_company, "rating": rating}
   )
 
 # single company page
@@ -32,13 +32,13 @@ def company_details(request, company_id):
 	company = Company.objects.get(id=company_id)
 	# get company rating
 	rating = Rating.objects.filter(company = company)
-	return render(request, "company.html", {"project": company, "rating": rating})
+	return render(request, "company.html", {"company": company, "rating": rating})
 
 @login_required(login_url="/accounts/login/")
 def profile(request):  # view profile
 	current_user = request.user
 	profile = Profile.objects.filter(user_id=current_user.id).first()  # get profile
-	company = Company.objects.filter(user_id=current_user.id).all()  # get all projects
+	company = Company.objects.filter(user_id=current_user.id).all()  # get all companies
 	return render(request, "profile.html", {"profile": profile, "images": company})
 
 @login_required(login_url="/accounts/login/")
@@ -149,12 +149,11 @@ def rate_company(request, id):
 
 			# get the avarage rate of the project for the three rates
 			avg_rating= (int(design_rate)+int(usability_rate)+int(content_rate))/3
-
 			# update the project with the new rate
 			company.rate=avg_rating
 			company.update_company()
 
-			return render(request, "project.html", {"success": "Company Rated Successfully", "company": company, "rating": Rating.objects.filter(company=company)})
+			return render(request, "company.html", {"success": "Company Rated Successfully", "company": company, "rating": Rating.objects.filter(company=company)})
   else:
 			company = Company.objects.get(id=id)
 			return render(request, "company.html", {"danger": "Company Rating Failed", "company": company})

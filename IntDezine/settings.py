@@ -37,7 +37,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'app',
     'bootstrap4',
+    'registration',
     'rest_framework',
+    'mathfilters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,8 +83,10 @@ WSGI_APPLICATION = 'IntDezine.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'design',
+        'USER': 'moringa',
+        'PASSWORD': 'othieno94',
     }
 }
 
@@ -121,6 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL ='/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
